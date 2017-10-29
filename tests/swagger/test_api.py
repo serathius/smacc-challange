@@ -1,9 +1,8 @@
+import urllib.error
 from unittest import mock
 
 import bravado.exception
 import pytest
-
-from smacc_email import error
 
 
 @mock.patch('smacc_email.service.sendgrid._send_email_sendgrid')
@@ -63,8 +62,8 @@ def test_send_email_returns_uknown_response(send_email_sendgrid, swagger_client)
 
 
 @mock.patch('smacc_email.service.sendgrid._send_email_sendgrid')
-def test_send_email_returns_internal_server_error(send_email_sendgrid, swagger_client):
-    send_email_sendgrid.side_effect = error.SendingFailed(service='sendgrid', reason='Connection')
+def test_send_email_connection_error(send_email_sendgrid, swagger_client):
+    send_email_sendgrid.side_effect = urllib.error.URLError(reason='connection')
     with pytest.raises(bravado.exception.HTTPServiceUnavailable):
         swagger_client.email.send_email(email_data={
             'from_email': 'a@a.pl',
