@@ -37,7 +37,7 @@ class EmailResource(flask_restful.Resource):
             raise flask_restful.abort(502)
         except error.SendingFailed:
             raise flask_restful.abort(503)
-        except error.UnrecognizedResponse as e:
+        except error.UnrecognizedResponse:
             raise flask_restful.abort(501)
 
 
