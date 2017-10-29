@@ -1,4 +1,3 @@
-import logging
 import os
 
 import flask
@@ -14,7 +13,6 @@ from smacc_email import settings
 
 
 def create_app(config: dict):
-    logging.basicConfig(level=logging.INFO)
     app = flask.Flask(__name__)
     app.config.update(**config)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
