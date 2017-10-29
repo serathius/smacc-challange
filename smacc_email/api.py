@@ -1,5 +1,3 @@
-import logging
-
 import flask_restful
 import marshmallow
 
@@ -7,7 +5,6 @@ from smacc_email import error
 from smacc_email import mail
 from smacc_email import schemas
 
-logger = logging.getLogger(__name__)
 manager = flask_restful.Api(prefix='/api/v1/email/')
 
 
@@ -36,23 +33,11 @@ class EmailResource(flask_restful.Resource):
                 subject=email_request.subject,
                 content=email_request.content,
             )
-        except error.ClientError as e:
-            logger.error('Bad usage of service api', extra=dict(
-                reason=e.reason,
-                service=e.service,
-            ))
+        except error.ClientError:
             raise flask_restful.abort(502)
-        except error.SendingFailed as e:
-            logger.warning('Sending email failed', extra=dict(
-                reason=e.reason,
-                service=e.service,
-            ))
+        except error.SendingFailed:
             raise flask_restful.abort(503)
         except error.UnrecognizedResponse as e:
-            logger.error('Unrecognized response', extra=dict(
-                status_code=e.status_code,
-                service=e.service,
-            ))
             raise flask_restful.abort(501)
 
 

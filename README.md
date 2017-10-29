@@ -4,6 +4,7 @@ I have 1 year of experience with flask.
 
 Supported email services:
 * Sendgrid (To test I created trial account, but after first request account was suspended.)
+* SES
 
 Tools used tools: docker, docker-compose, pip-tools, flake8, isort
 
@@ -20,6 +21,9 @@ pip-sync requirements/*.txt
 Configuration is available in file `docker-compose.yml` in environment of api service
 Variables to configure:
 * `SENDGRID_API_KEY`
+* `SES_REGION`
+* `SES_ACCESS_KEY_ID`
+* `SES_SECRET_ACCESS_KEY`
 
 
 Run:

@@ -2,6 +2,7 @@ flask
 pyyaml
 gunicorn
 raven[flask]
+boto3
 requests
 flask-restful
 flask-marshmallow
