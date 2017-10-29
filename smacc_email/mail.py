@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 def send_email(*, from_email: str, to_email: str, subject: str, content: str):
     err = None
 
-    for send_email in [sendgrid.send_email]:
+    for send_email in [sendgrid.send_email, ses.send_email]:
         try:
             return send_email(from_email=from_email, to_email=to_email, subject=subject, content=content)
         except error.ClientError as e:

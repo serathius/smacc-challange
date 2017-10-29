@@ -1,6 +1,7 @@
 import urllib.error
 from unittest import mock
 
+import botocore.exceptions
 import bravado.exception
 import pytest
 
@@ -16,6 +17,26 @@ def test_send_email(send_email_sendgrid, swagger_client):
     }).result()
     assert response.status_code == 202
     assert send_email_sendgrid.mock_calls == [
+        mock.call(from_email='a@a.pl', to_email='b@b.pl', content='content', subject='subject'),
+    ]
+
+
+@mock.patch('smacc_email.service.ses._send_email_ses')
+@mock.patch('smacc_email.service.sendgrid._send_email_sendgrid')
+def test_send_email_fails_over_to_ses(send_email_sendgrid, send_email_ses, swagger_client):
+    send_email_sendgrid.side_effect = urllib.error.URLError(reason='connection')
+    send_email_ses.return_value = {'ResponseMetadata': {'HTTPStatusCode': 200}}
+    _, response = swagger_client.email.send_email(email_data={
+        'from_email': 'a@a.pl',
+        'to_email': 'b@b.pl',
+        'content': 'content',
+        'subject': 'subject',
+    }).result()
+    assert response.status_code == 202
+    assert send_email_sendgrid.mock_calls == [
+        mock.call(from_email='a@a.pl', to_email='b@b.pl', content='content', subject='subject'),
+    ]
+    assert send_email_ses.mock_calls == [
         mock.call(from_email='a@a.pl', to_email='b@b.pl', content='content', subject='subject'),
     ]
 
@@ -61,46 +82,12 @@ def test_send_email_returns_uknown_response(send_email_sendgrid, swagger_client)
         }).result()
 
 
+@mock.patch('smacc_email.service.ses._send_email_ses')
 @mock.patch('smacc_email.service.sendgrid._send_email_sendgrid')
-def test_send_email_connection_error(send_email_sendgrid, swagger_client):
+def test_send_email_connection_error(send_email_sendgrid, send_email_ses, swagger_client):
     send_email_sendgrid.side_effect = urllib.error.URLError(reason='connection')
+    send_email_ses.side_effect = botocore.exceptions.EndpointConnectionError(endpoint_url='')
     with pytest.raises(bravado.exception.HTTPServiceUnavailable):
-        swagger_client.email.send_email(email_data={
-            'from_email': 'a@a.pl',
-            'to_email': 'b@b.pl',
-            'content': 'content',
-            'subject': 'subject',
-        }).result()
-
-
-@mock.patch('smacc_email.service.sendgrid._send_email_sendgrid')
-def test_send_email_returns_unauthorized(send_email_sendgrid, swagger_client):
-    send_email_sendgrid.return_value = mock.Mock(status=401)
-    with pytest.raises(bravado.exception.HTTPBadGateway):
-        swagger_client.email.send_email(email_data={
-            'from_email': 'a@a.pl',
-            'to_email': 'b@b.pl',
-            'content': 'content',
-            'subject': 'subject',
-        }).result()
-
-
-@mock.patch('smacc_email.service.sendgrid._send_email_sendgrid')
-def test_send_email_returns_entity_too_large(send_email_sendgrid, swagger_client):
-    send_email_sendgrid.return_value = mock.Mock(status=413)
-    with pytest.raises(bravado.exception.HTTPBadGateway):
-        swagger_client.email.send_email(email_data={
-            'from_email': 'a@a.pl',
-            'to_email': 'b@b.pl',
-            'content': 'content',
-            'subject': 'subject',
-        }).result()
-
-
-@mock.patch('smacc_email.service.sendgrid._send_email_sendgrid')
-def test_send_email_returns_bad_request(send_email_sendgrid, swagger_client):
-    send_email_sendgrid.return_value = mock.Mock(status=400)
-    with pytest.raises(bravado.exception.HTTPBadGateway):
         swagger_client.email.send_email(email_data={
             'from_email': 'a@a.pl',
             'to_email': 'b@b.pl',
