@@ -1,0 +1,7 @@
+flask
+pyyaml
+gunicorn
+raven[flask]
+requests
+flask-restful
+flask-marshmallow

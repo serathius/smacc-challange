@@ -1,0 +1,10 @@
+swagger: '2.0'
+basePath: /api/v1/email
+info: {title: smacc email API, version: '1.0'}
+produces:
+ - application/json
+consumes: [application/json]
+
+definitions: {}
+parameters: {}
+paths: {}

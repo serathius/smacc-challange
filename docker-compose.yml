@@ -1,0 +1,14 @@
+version: '2'
+services:
+  api:
+    image: email_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DEBUG: 1
+    ports:
+    - 127.0.0.1:80:80
+    volumes:
+    - ./smacc_email:/app/smacc_email:ro
+    - ./common:/app/common:ro
