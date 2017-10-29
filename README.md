@@ -41,6 +41,9 @@ Used swagger and wanted to setup `swagger-ui` in docker-compose, but unfortunate
 Setting up nginx for handling CORS would take to long.
 To get api documentation just pase contents of `swagger/email.yml` on https://editor.swagger.io/
 
+# Metrics
+Application provides prometheus metrics on `/metrics`
+
 # Static analysis
 
 Perform static analysis:
