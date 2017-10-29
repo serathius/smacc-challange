@@ -5,10 +5,6 @@ from smacc_email.service import sendgrid
 from smacc_email.service import ses
 
 logger = logging.getLogger(__name__)
-SENDGRID_API_KEY_FIELD_NAME = 'SENDGRID_API_KEY'
-SES_REGION_FIELD_NAME = 'SES_REGION'
-SES_ACCESS_KEY_ID_FIELD_NAME = 'SES_ACCESS_KEY_ID'
-SES_SECRET_ACCESS_KEY_FIELD_NAME = 'SES_SECRET_ACCESS_KEY'
 
 
 def send_email(*, from_email: str, to_email: str, subject: str, content: str):
