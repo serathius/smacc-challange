@@ -1,5 +1,7 @@
 import logging
 
+from common.prometheus import emails_sent_total
+
 from smacc_email import error
 from smacc_email.service import sendgrid
 from smacc_email.service import ses
@@ -18,7 +20,9 @@ def send_email(*, from_email: str, to_email: str, subject: str, content: str):
 
     for service, send_email in SERVICES.items():
         try:
-            return send_email(from_email=from_email, to_email=to_email, subject=subject, content=content)
+            send_email(from_email=from_email, to_email=to_email, subject=subject, content=content)
+            emails_sent_total.labels(service=service).inc()
+            return
         except error.ClientError as e:
             logger.error('Bad usage of service api', extra=dict(
                 reason=e.reason,

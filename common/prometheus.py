@@ -13,6 +13,9 @@ latency_seconds = prometheus_client.Histogram(
 requests_total = prometheus_client.Summary(
     'requests_total', 'HTTP Requests', ['code', 'method', 'handler']
 )
+emails_sent_total = prometheus_client.Counter(
+    'emails_sent_total', 'Emails sent', ['service']
+)
 
 
 @blueprint.before_app_request
