@@ -7,3 +7,4 @@ requests
 flask-restful
 flask-marshmallow
 sendgrid
+prometheus-client

@@ -22,6 +22,7 @@ jinja2==2.9.6             # via flask
 jmespath==0.9.3           # via boto3, botocore
 markupsafe==1.0           # via jinja2
 marshmallow==2.14.0       # via flask-marshmallow
+prometheus-client==0.0.21
 python-dateutil==2.6.1    # via aniso8601, botocore
 python-http-client==3.0.0  # via sendgrid
 pytz==2017.2              # via flask-restful

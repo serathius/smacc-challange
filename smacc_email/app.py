@@ -4,6 +4,7 @@ import flask
 
 from werkzeug.local import LocalProxy
 
+from common import prometheus
 from common import swagger
 from common.sentry import register_sentry
 
@@ -20,6 +21,7 @@ def create_app(config: dict):
     schemas.manager.init_app(app)
     smacc_email.api.manager.init_app(app)
     app.register_blueprint(swagger.blueprint)
+    app.register_blueprint(prometheus.blueprint)
     return app
 
 
