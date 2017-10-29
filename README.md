@@ -36,6 +36,11 @@ docker-compose up
 curl -H "Content-Type: application/json" -X POST -d '{"from_email": "a@a@.pl", "to_email": "b@b.pl", "subject": "Test", "content": "Hello World"}' localhost/api/v1/email/
 ```
 
+# API documentation
+Used swagger and wanted to setup `swagger-ui` in docker-compose, but unfortunately I had problems with CORS.
+Setting up nginx for handling CORS would take to long.
+To get api documentation just pase contents of `swagger/email.yml` on https://editor.swagger.io/
+
 # Static analysis
 
 Perform static analysis:
