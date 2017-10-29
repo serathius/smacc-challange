@@ -8,18 +8,18 @@ from common import utils
 
 from smacc_email import error
 
+SERVICE_NAME = 'ses'
 SES_REGION_FIELD_NAME = 'SES_REGION'
 SES_ACCESS_KEY_ID_FIELD_NAME = 'SES_ACCESS_KEY_ID'
 SES_SECRET_ACCESS_KEY_FIELD_NAME = 'SES_SECRET_ACCESS_KEY'
 
 
 def send_email(*, from_email: str, to_email: str, subject: str, content: str):
-    service = 'ses'
     try:
         response = _send_email_ses(from_email=from_email, to_email=to_email,
                                    subject=subject, content=content)
     except botocore.exceptions.EndpointConnectionError:
-        raise error.SendingFailed(reason='Connection', service=service)
+        raise error.SendingFailed(reason='Connection')
     else:
         status_code = response['ResponseMetadata']['HTTPStatusCode']
         if status_code == 200:
@@ -27,7 +27,7 @@ def send_email(*, from_email: str, to_email: str, subject: str, content: str):
         else:
             # didn't find information in documentation
             # no time to verify manually
-            raise error.UnrecognizedResponse(status_code=status_code, service=service)
+            raise error.UnrecognizedResponse(status_code=status_code)
 
 
 def configure_ses(environment: dict):
