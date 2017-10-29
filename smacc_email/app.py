@@ -4,7 +4,7 @@ import flask
 
 from werkzeug.local import LocalProxy
 
-from common import blueprints
+from common import swagger
 from common.sentry import register_sentry
 
 import smacc_email.api
@@ -19,7 +19,7 @@ def create_app(config: dict):
     register_sentry(app)
     schemas.manager.init_app(app)
     smacc_email.api.manager.init_app(app)
-    app.register_blueprint(blueprints.swagger)
+    app.register_blueprint(swagger.blueprint)
     return app
 
 
