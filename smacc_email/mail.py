@@ -14,7 +14,7 @@ SES_SECRET_ACCESS_KEY_FIELD_NAME = 'SES_SECRET_ACCESS_KEY'
 def send_email(*, from_email: str, to_email: str, subject: str, content: str):
     err = None
 
-    for send_email in [sendgrid.send_email, ses.send_email]:
+    for send_email in [sendgrid.send_email]:
         try:
             return send_email(from_email=from_email, to_email=to_email, subject=subject, content=content)
         except error.ClientError as e:

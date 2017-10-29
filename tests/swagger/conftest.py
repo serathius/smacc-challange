@@ -36,4 +36,7 @@ def swagger_client_config():
 def api_environment():
     return {
         'SENDGRID_API_KEY': '',
+        'SES_REGION': '',
+        'SES_ACCESS_KEY_ID': '',
+        'SES_SECRET_ACCESS_KEY': '',
     }
