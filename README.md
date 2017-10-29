@@ -1,5 +1,6 @@
 # SMACC Email
-Flask microservice to handle sending email
+Flask microservice to handle sending email.
+I have 1 year of experience with flask.
 
 Tools used tools: docker, docker-compose, pip-tools, flake8, isort
 
