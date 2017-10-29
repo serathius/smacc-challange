@@ -5,3 +5,4 @@ raven[flask]
 requests
 flask-restful
 flask-marshmallow
+sendgrid

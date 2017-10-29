@@ -5,6 +5,32 @@ produces:
  - application/json
 consumes: [application/json]
 
-definitions: {}
-parameters: {}
-paths: {}
+tags:
+- {name: email}
+
+definitions:
+  EmailRequest:
+    type: object
+    properties:
+      from_email: {type: string}
+      to_email: {type: string}
+      subject: {type: string}
+      content: {type: string}
+
+parameters:
+  email_request: {in: body, name: email_data, required: true, schema: {$ref: '#/definitions/EmailRequest'}}
+
+paths:
+  /:
+    post:
+      description: Sends email using Sendgrid
+      operationId: send_email
+      tags: [email]
+      parameters:
+        - {$ref: '#/parameters/email_request'}
+      responses:
+        202: {description: Request accepted by email service. No support for verifing if email was delivered.}
+        400: {description: Bad request.}
+        501: {description: One of services responded with unrecognized response. Should not retry request. }
+        502: {description: Was not able to fulfill request with any of services}
+        503: {description: Problems with connection with services. Available to retry.}

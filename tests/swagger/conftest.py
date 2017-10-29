@@ -34,4 +34,6 @@ def swagger_client_config():
 
 @pytest.fixture
 def api_environment():
-    return {}
+    return {
+        'SENDGRID_API_KEY': '',
+    }
